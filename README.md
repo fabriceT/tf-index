@@ -7,19 +7,30 @@ Why ?
 At least to files are required when mirroring provider:
 
 - index.json
-- <version>.json
+- \<version\>.json
 
-The <version>.json contains a [h1 hash](https://pkg.go.dev/golang.org/x/mod/sumdb/dirhash#Hash1) of the zip file of the provider. I couldn't find a CLI tool to calculate it, so I wrote a simple wrapper to do that.
+The \<version\>.json contains a [h1 hash](https://pkg.go.dev/golang.org/x/mod/sumdb/dirhash#Hash1) of the zip file of the provider. I couldn't find a CLI tool to calculate it, so I wrote a simple wrapper to do that.
 
 ---
+
 ## Note to myself
 
 The ~/.terraformrc must contains
+
 ```hcl
+provider_installation {
+  # ...
   network_mirror {
     url = "https://localhost/providers"
     include = [ "my/provider" ] # change with the providers you are mirroring.
   }
+
+  #...
+
+  direct {
+    exclude = [ "my/provider" ]
+  }
+}
 ```
 
 Adjust with your setup.
