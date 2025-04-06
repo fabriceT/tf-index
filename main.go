@@ -1,18 +1,20 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
-
-	"golang.org/x/mod/sumdb/dirhash"
+	"log"
 )
 
 func main() {
 	var filename string
 	var os string
+	var version string
 
 	flag.StringVar(&filename, "f", "", "Filename of the zip file")
 	flag.StringVar(&os, "o", "linux_amd64", "Os and arch")
+	flag.StringVar(&version, "v", "0.0.1", "Version of the provider")
 
 	flag.Parse()
 
@@ -21,22 +23,19 @@ func main() {
 		return
 	}
 
-	h1, err := dirhash.HashZip(filename, dirhash.Hash1)
-	if err != nil {
-		fmt.Println(err)
-		return
+	Archives := Archives{
+		Archives: make(map[string]ArchiveMeta),
 	}
 
-	json := `{
-  "archives": {
-    "%s": {
-      "hashes": [
-        "%s"
-      ],
-      "url": "%s"
-    }
-  }
-}`
+	err := Archives.appendMeta(filename, os)
+	if err != nil {
+		log.Panic(err)
+	}
 
-	fmt.Printf(json, os, h1, filename)
+	j, err := json.MarshalIndent(Archives, "", "  ")
+	if err != nil {
+		log.Panic(err)
+	}
+
+	fmt.Println(string(j))
 }
