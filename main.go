@@ -23,13 +23,14 @@ func main() {
 		return
 	}
 
-	Archives := newArchives()
-	err := Archives.appendMeta(filename, os)
+	archives := newArchivesFile(version)
+
+	err := archives.appendMeta(filename, os)
 	if err != nil {
 		log.Panic(err)
 	}
 
-	j, err := json.MarshalIndent(Archives, "", "  ")
+	j, err := json.MarshalIndent(archives.Index, "", "  ")
 	if err != nil {
 		log.Panic(err)
 	}

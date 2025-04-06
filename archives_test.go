@@ -1,17 +1,35 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
+
+const (
+	filename  = "terraform-provider-dummy_1.0.1_linux_amd64.zip"
+	os_target = "linux_amd64"
+	h1_hash   = "h1:DjKzR/Ni7nmREl1sd9JWT2A5LVuMNABJprzePYcuWoY="
+)
+
+func TestLoad(t *testing.T) {
+
+	os.Chdir("data")
+	archives := newArchivesFile("v1.0.0")
+
+	meta := archives.Index.Archives["linux_arm64"]
+
+	if meta.RelativeURL != filename {
+		t.Errorf("Got %s", meta.RelativeURL)
+	}
+}
 
 func TestAppendMeta(t *testing.T) {
-	const filename = "data/terraform-provider-dummy_1.0.1_linux_amd64.zip"
-	const os_target = "linux_amd64"
-	const h1_hash = "h1:DjKzR/Ni7nmREl1sd9JWT2A5LVuMNABJprzePYcuWoY="
-
-	archives := newArchives()
+	os.Chdir("data")
+	archives := newArchivesFile("0.0.1")
 
 	archives.appendMeta(filename, os_target)
 
-	meta := archives.Archives[os_target]
+	meta := archives.Index.Archives[os_target]
 
 	if meta.RelativeURL != filename {
 		t.Errorf("Got %s", meta.RelativeURL)
@@ -26,7 +44,7 @@ func TestAppendMeta(t *testing.T) {
 	}
 
 	// RFU
-	meta2 := archives.Archives["darwin_risc"]
+	meta2 := archives.Index.Archives["darwin_risc"]
 	if meta2.RelativeURL != "" {
 		t.Errorf("RelativeURL(meta2) Got %s", meta2.RelativeURL)
 	}

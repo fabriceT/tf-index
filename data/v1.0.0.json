@@ -1,0 +1,10 @@
+{
+  "archives": {
+    "linux_arm64": {
+      "url": "terraform-provider-dummy_1.0.1_linux_amd64.zip",
+      "hashes": [
+        "h1:KayByM+/I5EkcvIl1in59WIIhHSs1K7AjNaJshGaQlA="
+      ]
+    }
+  }
+}
