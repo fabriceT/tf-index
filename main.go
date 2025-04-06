@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -30,10 +29,5 @@ func main() {
 		log.Panic(err)
 	}
 
-	j, err := json.MarshalIndent(archives.Index, "", "  ")
-	if err != nil {
-		log.Panic(err)
-	}
-
-	fmt.Println(string(j))
+	archives.save()
 }

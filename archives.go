@@ -48,6 +48,15 @@ func (a *ArchivesFile) load() {
 	}
 }
 
+func (a *ArchivesFile) save() error {
+	j, err := json.MarshalIndent(a.Index, "", "  ")
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return os.WriteFile(getVersionFile(a.Version), j, 0644)
+}
+
 func (a *ArchivesFile) appendMeta(filename string, os string) error {
 	h1, err := dirhash.HashZip(filename, dirhash.Hash1)
 	if err != nil {
