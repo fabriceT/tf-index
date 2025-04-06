@@ -7,13 +7,17 @@ import (
 )
 
 func main() {
-	var filename string
-	var os string
-	var version string
+	var (
+		filename    string
+		os          string
+		version     string
+		relativeURL string
+	)
 
 	flag.StringVar(&filename, "f", "", "Filename of the zip file")
 	flag.StringVar(&os, "o", "linux_amd64", "Os and arch")
 	flag.StringVar(&version, "v", "0.0.1", "Version of the provider")
+	flag.StringVar(&relativeURL, "r", "./", "Relative URL")
 
 	flag.Parse()
 
@@ -22,7 +26,7 @@ func main() {
 		return
 	}
 
-	archives := newArchivesFile(version)
+	archives := newArchivesFile(version, relativeURL)
 
 	err := archives.appendMeta(filename, os)
 	if err != nil {

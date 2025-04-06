@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"path"
 
 	"golang.org/x/mod/sumdb/dirhash"
 )
 
 type ArchivesFile struct {
-	Version string
-	Index   Archives
+	Version     string
+	RelativeURL string
+	Index       Archives
 }
 
 type Archives struct {
@@ -22,9 +24,10 @@ type ArchiveMeta struct {
 	Hashes      []string `json:"hashes"`
 }
 
-func newArchivesFile(version string) ArchivesFile {
+func newArchivesFile(version, relativeURL string) ArchivesFile {
 	af := ArchivesFile{
-		Version: version,
+		Version:     version,
+		RelativeURL: relativeURL,
 		Index: Archives{
 			Archives: make(map[string]ArchiveMeta),
 		},
@@ -63,8 +66,10 @@ func (a *ArchivesFile) appendMeta(filename string, os string) error {
 		return err
 	}
 
+	url := path.Join(a.RelativeURL, path.Base(filename))
+
 	a.Index.Archives[os] = ArchiveMeta{
-		RelativeURL: filename,
+		RelativeURL: url,
 		Hashes:      []string{h1},
 	}
 

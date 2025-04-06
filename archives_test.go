@@ -14,7 +14,7 @@ const (
 func TestLoad(t *testing.T) {
 
 	os.Chdir("data")
-	archives := newArchivesFile("v1.0.0")
+	archives := newArchivesFile("v1.0.0", "./")
 
 	meta := archives.Index.Archives["linux_arm64"]
 
@@ -25,7 +25,7 @@ func TestLoad(t *testing.T) {
 
 func TestAppendMeta(t *testing.T) {
 	os.Chdir("data")
-	archives := newArchivesFile("0.0.1")
+	archives := newArchivesFile("0.0.1", "./data/")
 
 	archives.appendMeta(filename, os_target)
 
