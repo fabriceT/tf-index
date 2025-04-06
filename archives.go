@@ -11,6 +11,12 @@ type ArchiveMeta struct {
 	Hashes      []string `json:"hashes"`
 }
 
+func newArchives() Archives {
+	return Archives{
+		Archives: make(map[string]ArchiveMeta),
+	}
+}
+
 func (a *Archives) appendMeta(filename string, os string) error {
 	h1, err := dirhash.HashZip(filename, dirhash.Hash1)
 	if err != nil {

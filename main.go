@@ -23,10 +23,7 @@ func main() {
 		return
 	}
 
-	Archives := Archives{
-		Archives: make(map[string]ArchiveMeta),
-	}
-
+	Archives := newArchives()
 	err := Archives.appendMeta(filename, os)
 	if err != nil {
 		log.Panic(err)
