@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"testing"
+	"path"
 )
 
 const (
@@ -31,7 +32,7 @@ func TestAppendMeta(t *testing.T) {
 
 	meta := archives.Index.Archives[os_target]
 
-	if meta.RelativeURL != filename {
+	if meta.RelativeURL != path.Join("data",filename) {
 		t.Errorf("Got %s", meta.RelativeURL)
 	}
 
